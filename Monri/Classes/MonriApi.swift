@@ -124,7 +124,7 @@ public final class MonriApi {
         }
 
         if let v = validateExpirationDate(month: card.expMonth, year: card.expYear) {
-            return v;
+            return v
         }
 
         return nil

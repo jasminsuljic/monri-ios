@@ -89,7 +89,7 @@ class PaymentAuthWebViewNavigationDelegate: NSObject, WKNavigationDelegate {
     }
 }
 
-protocol TransactionAuthorizationFlowDelegate {
+public protocol TransactionAuthorizationFlowDelegate {
     func threeDs1Result(status: String, clientSecret: String)
     func redirectingToAcs()
     func acsAuthenticationFinished()

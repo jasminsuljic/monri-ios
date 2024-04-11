@@ -7,23 +7,19 @@ import os.log
 
 class PaymentErrorFlowImpl: PaymentErrorFlow {
 
-    weak var vc: ConfirmPaymentControllerViewController?
+    private var uiDelegate: UiDelegate
     private let clientSecret: String
 
     var logger: MonriLogger {
         MonriLoggerImpl(log: OSLog(subsystem: "Monri", category: "PaymentErrorFlow"))
     }
 
-    init(vc: ConfirmPaymentControllerViewController?, clientSecret: String) {
-        self.vc = vc
+    init(uiDelegate: UiDelegate, clientSecret: String) {
+        self.uiDelegate = uiDelegate
         self.clientSecret = clientSecret
     }
 
     func handleResult(error: Error) {
-        guard let vc = self.vc else {
-            return
-        }
-
-        vc.result(.error(PaymentResultError.error(error)))
+        uiDelegate.handlePaymentResult(paymentResult: .error(PaymentResultError.error(error)))
     }
 }

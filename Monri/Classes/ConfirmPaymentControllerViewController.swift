@@ -20,7 +20,7 @@ class ConfirmPaymentControllerViewController: UIViewController {
     internal var monriApiOptions: MonriApiOptions!
 
     var confirmPaymentCallback: ConfirmPaymentResponseCallback {
-        ConfirmPaymentResponseCallback.create(vc: self, navigationDelegate: self.navigationDelegate)
+        ConfirmPaymentResponseCallback.create(uiDelegate: self, monriHttpApi: monri.httpApi, confirmPaymentParams: confirmPaymentParams)
     }
 
     var monri: MonriApi {
@@ -138,10 +138,7 @@ class ConfirmPaymentControllerViewController: UIViewController {
         
         webView.navigationDelegate = navigationDelegate
         
-        let clientSecret: String = confirmPaymentParams.paymentId
-        
-        let directPaymentFlow = ConfirmDirectPaymentFlowImpl(vc: self,
-                                                                navigationDelegate: navigationDelegate,
+        let directPaymentFlow = ConfirmDirectPaymentFlowImpl(uiDelegate: self,
                                                                 apiOptions: apiOptions,
                                                                 monriApi: monri,
                                                                 confirmPaymentParams: confirmPaymentParams)
@@ -155,5 +152,42 @@ extension ConfirmPaymentControllerViewController: Delegate {
     func onPageLoadFinished() {
         webView.isHidden = false
         webView.stopLoading()
+    }
+}
+
+extension ConfirmPaymentControllerViewController: UiDelegate {
+    
+    func showLoading() {
+        indicator.isHidden = false
+        indicator.startAnimating()
+    }
+    
+    func hideLoading() {
+        indicator.stopAnimating()
+        indicator.isHidden = true
+    }
+    
+    func showWebView() {
+        webView.isHidden = false
+    }
+    
+    func loadWebViewUrl(url: URLRequest) {
+        webView.load(url)
+    }
+    
+    func hideWebView() {
+        webView.isHidden = true
+    }
+    
+    func handlePaymentResult(paymentResult: ConfirmPaymentResult) {
+        result(paymentResult)
+    }
+    
+    func pending() {
+        result(.pending)
+    }
+    
+    func setFlowDelegate(delegate: TransactionAuthorizationFlowDelegate) {
+        navigationDelegate.flowDelegate = delegate
     }
 }

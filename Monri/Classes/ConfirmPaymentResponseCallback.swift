@@ -5,13 +5,13 @@
 import Foundation
 
 class ConfirmPaymentResponseCallback {
-
+    
     private let actionRequiredFlow: ActionRequiredFlow
     private let paymentApprovedFlow: PaymentApprovedFlow
     private let paymentDeclinedFlow: PaymentDeclinedFlow
     private let unknownFlow: UnknownFlow
     private let paymentErrorFlow: PaymentErrorFlow
-
+    
     init(actionRequiredFlow: ActionRequiredFlow, paymentApprovedFlow: PaymentApprovedFlow, paymentDeclinedFlow: PaymentDeclinedFlow, unknownFlow: UnknownFlow, paymentErrorFlow: PaymentErrorFlow) {
         self.actionRequiredFlow = actionRequiredFlow
         self.paymentApprovedFlow = paymentApprovedFlow
@@ -19,25 +19,26 @@ class ConfirmPaymentResponseCallback {
         self.unknownFlow = unknownFlow
         self.paymentErrorFlow = paymentErrorFlow
     }
-
-    static func create(vc: ConfirmPaymentControllerViewController,
-                       navigationDelegate: PaymentAuthWebViewNavigationDelegate) -> ConfirmPaymentResponseCallback {
-        let clientSecret: String = vc.confirmPaymentParams.paymentId
+    
+    static func create(uiDelegate: UiDelegate,
+                       monriHttpApi: MonriHttpApi,
+                       confirmPaymentParams: ConfirmPaymentParams) -> ConfirmPaymentResponseCallback {
+        let clientSecret: String = confirmPaymentParams.paymentId
         return ConfirmPaymentResponseCallback(
-                actionRequiredFlow: ActionRequiredFlowImpl(vc: vc,
-                        navigationDelegate: navigationDelegate,
-                        monriApi: vc.monri.httpApi, clientSecret: clientSecret),
-                paymentApprovedFlow: PaymentApprovedFlowImpl(vc: vc, clientSecret: clientSecret),
-                paymentDeclinedFlow: PaymentDeclinedFlowImpl(vc: vc, clientSecret: clientSecret),
-                unknownFlow: UnknownFlowImpl(vc: vc, clientSecret: clientSecret),
-                paymentErrorFlow: PaymentErrorFlowImpl(vc: vc, clientSecret: clientSecret)
+            actionRequiredFlow: ActionRequiredFlowImpl(uiDelegate: uiDelegate,
+                                                       monriApi: monriHttpApi,
+                                                       clientSecret: clientSecret),
+            paymentApprovedFlow: PaymentApprovedFlowImpl(uiDelegate: uiDelegate, clientSecret: clientSecret),
+            paymentDeclinedFlow: PaymentDeclinedFlowImpl(uiDelegate: uiDelegate, clientSecret: clientSecret),
+            unknownFlow: UnknownFlowImpl(uiDelegate: uiDelegate, clientSecret: clientSecret),
+            paymentErrorFlow: PaymentErrorFlowImpl(uiDelegate: uiDelegate, clientSecret: clientSecret)
         )
     }
-
+    
     func onError(error: Error) {
         paymentErrorFlow.handleResult(error: error)
     }
-
+    
     func onSuccess(result: ConfirmPaymentResponse) {
         switch (result.status) {
         case .action_required:
