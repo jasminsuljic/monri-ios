@@ -5,5 +5,9 @@
 import Foundation
 
 public enum PaymentStatus: String {
-    case approved, declined, executed, action_required
+    case approved
+    case declined
+    case executed
+    case action_required
+    case payment_method_required
 }

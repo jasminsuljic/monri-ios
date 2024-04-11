@@ -20,18 +20,18 @@ class MonriPaymentController: PaymentController {
 
     func confirmPayment(params: ConfirmPaymentParams,
                         _ callback: @escaping ConfirmPaymentResultCallback) {
-
+        
         guard let vc = viewController else {
             logger.warn("confirmPayment invoked with disposed navigation controller")
             return
         }
-
+        
         let version: String = Bundle(identifier: "org.cocoapods.Monri")?.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
-
+        
         params.transaction
                 .set("meta.\(MetaUtility.INTEGRATION_TYPE_KEY)", "ios-sdk")
                 .set("meta.\(MetaUtility.LIBRARY_KEY)", MonriUtil.library())
-                .set("meta.\(MetaUtility.LIBRARY_VERSION_KEY)", version);
+                .set("meta.\(MetaUtility.LIBRARY_VERSION_KEY)", version)
 
         let next = ConfirmPaymentControllerViewController.create(confirmPaymentParams: params,
                 monriApiOptions: options,

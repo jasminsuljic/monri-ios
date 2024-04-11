@@ -63,7 +63,6 @@ class ActionRequiredFlowImpl: ActionRequiredFlow {
                 return
             }
 
-            navigationDelegate.acsUrl = acsUrl
 
             logger.info("Handle result invoked with acsUrl = \(acsUrl)")
 
@@ -72,7 +71,7 @@ class ActionRequiredFlowImpl: ActionRequiredFlow {
                 vc.webView.isHidden = true
                 vc.webView.load(redirectUrl)
             }
-        });
+        })
 
     }
 
@@ -126,7 +125,7 @@ extension ActionRequiredFlowImpl: TransactionAuthorizationFlowDelegate {
                     case .error:
                         self.checkPaymentStatus(clientSecret: clientSecret, count: self.atomicInteger.incrementAndGet())
                     case .result(let r):
-                        vc.resultReceived(statusResponse: r);
+                        vc.resultReceived(statusResponse: r)
                     }
                 }
             }

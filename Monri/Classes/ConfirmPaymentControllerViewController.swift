@@ -34,7 +34,7 @@ class ConfirmPaymentControllerViewController: UIViewController {
         vc.confirmPaymentParams = confirmPaymentParams
         vc.monriApiOptions = monriApiOptions
         vc.callback = callback
-        return vc;
+        return vc
     }
 
     override func viewDidLoad() {
@@ -65,26 +65,33 @@ class ConfirmPaymentControllerViewController: UIViewController {
 
         indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-//
-        navigationDelegate = PaymentAuthWebViewNavigationDelegate()
-        webView.navigationDelegate = navigationDelegate
+        
 
-        monri.httpApi.confirmPayment(confirmPaymentParams) { [weak self] r in
-            guard let vc = self else {
-                return
+        if PaymentMethodType.directPayments.contains(where: { $0.rawValue == confirmPaymentParams.paymentMethod.type }) {
+            
+            confirmDirectPayment(confirmPaymentParams: confirmPaymentParams, apiOptions: monriApiOptions)
+            
+        } else {
+            
+            navigationDelegate = PaymentAuthWebViewNavigationDelegate()
+            webView.navigationDelegate = navigationDelegate
+            
+            monri.httpApi.confirmPayment(confirmPaymentParams) { [weak self] r in
+                guard let vc = self else {
+                    return
+                }
+
+                switch (r) {
+                case .error(let e):
+                    vc.confirmPaymentCallback.onError(error: e)
+                case .result(let r):
+                    vc.confirmPaymentCallback.onSuccess(result: r)
+                case .pending:
+                    vc.result(ConfirmPaymentResult.pending)
+                case .unknownError(let error):
+                    vc.result(ConfirmPaymentResult.error(PaymentResultError.error(error)))
+                }
             }
-
-            switch (r) {
-            case .error(let e):
-                vc.confirmPaymentCallback.onError(error: e)
-            case .result(let r):
-                vc.confirmPaymentCallback.onSuccess(result: r)
-            case .pending:
-                vc.result(ConfirmPaymentResult.pending)
-            case .unknownError(let error):
-                vc.result(ConfirmPaymentResult.error(PaymentResultError.error(error)))
-            }
-
         }
     }
 
@@ -124,5 +131,29 @@ class ConfirmPaymentControllerViewController: UIViewController {
     func paymentError(error: Error) {
         result(ConfirmPaymentResult.error(PaymentResultError.error(error)))
     }
+    
+    func confirmDirectPayment(confirmPaymentParams: ConfirmPaymentParams, apiOptions: MonriApiOptions) {
+        
+        let navigationDelegate = DirectPaymentWebViewNavigationDelegate(delegate: self)
+        
+        webView.navigationDelegate = navigationDelegate
+        
+        let clientSecret: String = confirmPaymentParams.paymentId
+        
+        let directPaymentFlow = ConfirmDirectPaymentFlowImpl(vc: self,
+                                                                navigationDelegate: navigationDelegate,
+                                                                apiOptions: apiOptions,
+                                                                monriApi: monri,
+                                                                confirmPaymentParams: confirmPaymentParams)
+        
+        directPaymentFlow.execute()
+    }
 
+}
+
+extension ConfirmPaymentControllerViewController: Delegate {
+    func onPageLoadFinished() {
+        webView.isHidden = false
+        webView.stopLoading()
+    }
 }

@@ -7,10 +7,13 @@
 
 import Foundation
 
-public enum PaymentMethodType {
-    case newCard
-    case savedCard
-
+public enum PaymentMethodType: String {
+    case newCard = "card"
+    case savedCard = "saved_card"
+    case payCekHr = "pay_cek_hr"
+    
+    public static let directPayments: [PaymentMethodType] = [PaymentMethodType.payCekHr]
+    
 }
 
 public protocol PaymentMethod {
