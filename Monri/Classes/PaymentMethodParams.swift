@@ -11,12 +11,12 @@ public class PaymentMethodParams {
     let type: String
     let data: Dictionary<String, Any>
     
-    init(type: String, data: Dictionary<String, Any>) {
+    public init(type: String, data: Dictionary<String, Any>) {
         self.data = data
         self.type = type
     }
 
-    func toJSON() -> Dictionary<String, Any> {
+    public func toJSON() -> Dictionary<String, Any> {
         [
             "type": type,
             "data": data

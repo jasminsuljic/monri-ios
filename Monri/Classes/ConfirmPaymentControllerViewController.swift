@@ -150,8 +150,8 @@ class ConfirmPaymentControllerViewController: UIViewController {
 
 extension ConfirmPaymentControllerViewController: Delegate {
     func onPageLoadFinished() {
-        webView.isHidden = false
-        webView.stopLoading()
+        hideLoading()
+        showWebView()
     }
 }
 

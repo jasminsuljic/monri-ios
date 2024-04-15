@@ -15,6 +15,9 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		9980E9B2054E476D335A7E09 /* NewPaymentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9980E843C05AB8F0FC1EB398 /* NewPaymentResponse.swift */; };
 		9980E9BF4CD955015AB15F5C /* OrdersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9980E8FCB5B1A7857DEAEF43 /* OrdersRepository.swift */; };
+		BE15D9722BC90D3B00C82C59 /* ConfirmDirectPaymentFlowTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15D9712BC90D3B00C82C59 /* ConfirmDirectPaymentFlowTest.swift */; };
+		BE15D9762BC90DB900C82C59 /* FakeMonriHttpApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15D9742BC90DB000C82C59 /* FakeMonriHttpApi.swift */; };
+		BE15D97A2BC90E3300C82C59 /* FakeUiDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE15D9792BC90E3300C82C59 /* FakeUiDelegate.swift */; };
 		D915BC9D4233636CF97F4990 /* Pods_Monri_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6EE1DD1CEAE4DB4849B9A4F /* Pods_Monri_Tests.framework */; };
 		E61D61AFDD83F96A19D377F0 /* Pods_Monri_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31250EB541150AA6F9D89D4D /* Pods_Monri_Example.framework */; };
 		F22C6768236C335400231B9E /* HMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22C6767236C335400231B9E /* HMac.swift */; };
@@ -52,6 +55,9 @@
 		9980EC8C91320D3B68241779 /* MonriPaymentApiTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonriPaymentApiTest.swift; sourceTree = "<group>"; };
 		A264B12287B435CC4971019D /* Monri.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Monri.podspec; path = ../Monri.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BB2CA01E3DAC8BDABD3B9190 /* Pods-Monri_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Monri_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Monri_Tests/Pods-Monri_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		BE15D9712BC90D3B00C82C59 /* ConfirmDirectPaymentFlowTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDirectPaymentFlowTest.swift; sourceTree = "<group>"; };
+		BE15D9742BC90DB000C82C59 /* FakeMonriHttpApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMonriHttpApi.swift; sourceTree = "<group>"; };
+		BE15D9792BC90E3300C82C59 /* FakeUiDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeUiDelegate.swift; sourceTree = "<group>"; };
 		C6EE1DD1CEAE4DB4849B9A4F /* Pods_Monri_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Monri_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CADEDD46D49D8F7C837263C3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		DEF0999D90C891CD973DF9F8 /* Pods-Monri_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Monri_Tests.release.xcconfig"; path = "Target Support Files/Pods-Monri_Tests/Pods-Monri_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -140,6 +146,8 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				BE15D9732BC90D5500C82C59 /* DirectPaymentFake */,
+				BE15D9712BC90D3B00C82C59 /* ConfirmDirectPaymentFlowTest.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				F24C8F0925010FD100E20DB6 /* ValidatorsTest.swift */,
 				9980EC8C91320D3B68241779 /* MonriPaymentApiTest.swift */,
@@ -164,6 +172,15 @@
 				ED630925A1747D31376A49ED /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		BE15D9732BC90D5500C82C59 /* DirectPaymentFake */ = {
+			isa = PBXGroup;
+			children = (
+				BE15D9742BC90DB000C82C59 /* FakeMonriHttpApi.swift */,
+				BE15D9792BC90E3300C82C59 /* FakeUiDelegate.swift */,
+			);
+			name = DirectPaymentFake;
 			sourceTree = "<group>";
 		};
 		F2C15EB46CE6CA809B559ACD /* Frameworks */ = {
@@ -388,7 +405,10 @@
 				F24C8F0A25010FD100E20DB6 /* ValidatorsTest.swift in Sources */,
 				F2A24D382501990D007A2C35 /* HMac.swift in Sources */,
 				F24C8F0B250131A300E20DB6 /* MonriPaymentApiTest.swift in Sources */,
+				BE15D9762BC90DB900C82C59 /* FakeMonriHttpApi.swift in Sources */,
 				1BC6B3D72965935D00C7E2CA /* MonriPaymentsCustomerApiTest.swift in Sources */,
+				BE15D9722BC90D3B00C82C59 /* ConfirmDirectPaymentFlowTest.swift in Sources */,
+				BE15D97A2BC90E3300C82C59 /* FakeUiDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

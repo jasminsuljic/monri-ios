@@ -46,12 +46,13 @@ class AlamofireMonriHttpClient: MonriHttpClient {
 
     func handleResponse(_ dataResponse: DataResponse<Any, AFError>, _ callback: @escaping (MonriHttpClientResponse) -> Void) {
         do {
-            let statusCode = dataResponse.response!.statusCode
-
+            
             guard let data = dataResponse.data else {
                 callback(.error(.responseDataMissing))
                 return
             }
+            
+            let statusCode = dataResponse.response!.statusCode
 
             let headers = dataResponse.response!.allHeaderFields
 

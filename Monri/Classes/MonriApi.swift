@@ -15,7 +15,7 @@ public final class MonriApi {
     private let apiUrl: String
     private let tokenizeUrl: String
     private let options: MonriApiOptions
-    public let httpApi: MonriHttpApi
+    public var httpApi: MonriHttpApi
     private let customerApi: CustomerApi
 
     private weak var viewController: UIViewController?
