@@ -70,20 +70,50 @@ class ConfirmDirectPaymentFlowTest: XCTestCase {
         let expectation = expectation(description: "testExecuteShouldKeepCheckingForStatusWhenHandlingPaymentMethodRequiredStatus")
         let expectedStatusChecksCount = 5
         
-        let paymentMethodRequiredResponse = PaymentStatusResponse(paymentStatus: .payment_method_required, status: PaymentStatus.payment_method_required.rawValue, paymentResult: nil)
+        let expectedPaymentResult = PaymentResult(status: "transaction_status",
+                                                  currency: nil,
+                                                  amount: nil,
+                                                  orderNumber: nil,
+                                                  panToken: nil,
+                                                  createdAt: nil,
+                                                  transactionType: nil,
+                                                  paymentMethod: nil,
+                                                  errors: [])
+        
+        let paymentMethodRequiredResponse = PaymentStatusResponse(paymentStatus: .payment_method_required, status: PaymentStatus.payment_method_required.rawValue, paymentResult: expectedPaymentResult)
+        let approvedResponse = PaymentStatusResponse(paymentStatus: .approved, status: PaymentStatus.approved.rawValue, paymentResult: nil)
         
         let uiDelegate = FakeUiDelegate()
+        
         let confirmPaymentParams = ConfirmPaymentParams(
             paymentId: PAYMENT_ID,
             paymentMethod: DirectPayment(paymentProvider: DirectPayment.Provider.PAY_CEK_HR).toPaymentMethodParams(),
             transaction: TransactionParams.create()
                 .set("order_info", "iOS SDK payment session")
         )
+        
         let monriApiOptions = MonriApiOptions(authenticityToken: AUTHENTICITY_TOKEN, developmentMode: true)
         let currentViewController = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
         let monriApi = MonriApi(currentViewController, options: monriApiOptions)
         
         monriApi.httpApi = FakeMonriHttpApi(paymentStatusHandler: .result(paymentMethodRequiredResponse), monriHttpApi: monriApi.httpApi)
+        
+        let atomicInteger = AtomicInteger()
+        
+        if let fakeApi = monriApi.httpApi as? FakeMonriHttpApi {
+            
+            let params = PaymentStatusParams(clientSecret: confirmPaymentParams.paymentId)
+            
+            if atomicInteger.incrementAndGet() < expectedStatusChecksCount {
+                fakeApi.paymentStatus(params) { result in
+                    uiDelegate.handlePaymentResult(paymentResult: ConfirmPaymentResult.result(paymentMethodRequiredResponse.paymentResult!))
+                }
+            } else {
+                fakeApi.paymentStatus(params) { result in
+                    uiDelegate.handlePaymentResult(paymentResult: ConfirmPaymentResult.result(approvedResponse.paymentResult!))
+                }
+            }
+        }
         
         let confirmDirectPaymentFlow = ConfirmDirectPaymentFlowImpl(uiDelegate: uiDelegate,
                                                                     apiOptions: monriApiOptions,
@@ -93,12 +123,12 @@ class ConfirmDirectPaymentFlowTest: XCTestCase {
         // When
         confirmDirectPaymentFlow.execute()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6.5) {
             expectation.fulfill()
         }
 
         // Then
-        waitForExpectations(timeout: 20, handler: nil)
+        waitForExpectations(timeout: 7, handler: nil)
         
         guard let fakeMonriHttpApi = monriApi.httpApi as? FakeMonriHttpApi else {
             XCTFail()
@@ -113,9 +143,17 @@ class ConfirmDirectPaymentFlowTest: XCTestCase {
         // Given
         let expectation = expectation(description: "testExecuteShouldReturnExpectedPaymentResultAndRenderUiWhenPaymentStatusIsApproved")
         
-        let expectedPaymentStatus = PaymentStatus.approved
+        let expectedPaymentResult = PaymentResult(status: "approved",
+                                                  currency: nil,
+                                                  amount: nil,
+                                                  orderNumber: nil,
+                                                  panToken: nil,
+                                                  createdAt: nil,
+                                                  transactionType: nil,
+                                                  paymentMethod: nil,
+                                                  errors: [])
         
-        let paymentMethodRequiredResponse = PaymentStatusResponse(paymentStatus: .approved, status: PaymentStatus.approved.rawValue, paymentResult: nil)
+        let paymentMethodRequiredResponse = PaymentStatusResponse(paymentStatus: .approved, status: PaymentStatus.approved.rawValue, paymentResult: expectedPaymentResult)
         
         let uiDelegate = FakeUiDelegate()
         let confirmPaymentParams = ConfirmPaymentParams(
@@ -147,7 +185,7 @@ class ConfirmDirectPaymentFlowTest: XCTestCase {
         
         switch uiDelegate.getPaymentResultToHandle() {
         case .result(let paymentResult):
-            expect(paymentResult.status).to(equal(expectedPaymentStatus.rawValue))
+            expect(paymentResult.status).to(equal(PaymentStatus.approved.rawValue))
         default:
             break
         }

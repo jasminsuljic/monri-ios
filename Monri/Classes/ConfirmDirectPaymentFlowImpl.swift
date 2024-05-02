@@ -41,45 +41,39 @@ public final class ConfirmDirectPaymentFlowImpl {
     }
     
     
-    func checkPaymentStatus(clientSecret: String, count: Int) {
-        if count >= 5 {
-            uiDelegate.pending()
-        } else {
-            monriApi.httpApi.paymentStatus(PaymentStatusParams(clientSecret: clientSecret)) {
-                result in
-                switch (result) {
-                case .error(let e):
+    func checkPaymentStatus(clientSecret: String) {
+        monriApi.httpApi.paymentStatus(PaymentStatusParams(clientSecret: clientSecret)) {
+            result in
+            switch (result) {
+            case .error(let e):
+                
+                switch e {
+                case .requestFailed(let string):
+                    self.paymentErrorFlow.handleResult(error: NSError(domain: string, code: 0))
+                case .confirmPaymentFailed:
+                    self.paymentErrorFlow.handleResult(error: NSError(domain: "confirmDirectPaymentFailed", code: 0))
+                case .jsonParsingError(let string):
+                    self.paymentErrorFlow.handleResult(error: NSError(domain: string, code: 0))
+                case .unknownError(let error):
+                    self.paymentErrorFlow.handleResult(error: error)
+                }
+            case .result(let r):
+                
+                switch r.paymentStatus {
                     
-                    switch e {
-                    case .requestFailed(let string):
-                        self.paymentErrorFlow.handleResult(error: NSError(domain: string, code: 0))
-                    case .confirmPaymentFailed:
-                        self.paymentErrorFlow.handleResult(error: NSError(domain: "confirmDirectPaymentFailed", code: 0))
-                    case .jsonParsingError(let string):
-                        self.paymentErrorFlow.handleResult(error: NSError(domain: string, code: 0))
-                    case .unknownError(let error):
-                        self.paymentErrorFlow.handleResult(error: error)
+                case .approved, .declined, .executed:
+                    DispatchQueue.main.async {
+                        self.handleResult(ConfirmPaymentResponse(status: r.paymentStatus, actionRequired: nil, paymentResult: r.paymentResult))
                     }
-                case .result(let r):
-                    
-                    switch r.paymentStatus {
-                        
-                    case .approved, .declined, .executed:
-                        DispatchQueue.main.async {
-                            self.handleResult(ConfirmPaymentResponse(status: r.paymentStatus, actionRequired: nil, paymentResult: r.paymentResult))
-                        }
-                    case .action_required:
-                        break
-                    case .payment_method_required:
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.checkPaymentStatus(clientSecret: clientSecret, count: self.atomicInteger.incrementAndGet())
-                        }
+                case .action_required:
+                    break
+                case .payment_method_required:
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.checkPaymentStatus(clientSecret: clientSecret)
                     }
                 }
             }
         }
-        
-        
     }
     
     public func execute() {
@@ -101,7 +95,7 @@ public final class ConfirmDirectPaymentFlowImpl {
         }
         
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 3) {
-            self.checkPaymentStatus(clientSecret: self.clientSecret, count: 0)
+            self.checkPaymentStatus(clientSecret: self.clientSecret)
         }
     }
     
