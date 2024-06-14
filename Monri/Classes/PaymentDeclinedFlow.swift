@@ -5,5 +5,5 @@
 import Foundation
 
 protocol PaymentDeclinedFlow {
-    func handleResult(_ response: ConfirmPaymentResponse);
+    func handleResult(_ response: ConfirmPaymentResponse)
 }

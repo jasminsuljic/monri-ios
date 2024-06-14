@@ -8,8 +8,6 @@ import os.log
 
 class PaymentAuthWebViewNavigationDelegate: NSObject, WKNavigationDelegate {
 
-    var acsUrl: String? = nil
-
     static let WHITELISTED_HOST_NAMES = [
         "https://ipgtest.monri.com",
         "https://ipg.monri.com",
@@ -91,10 +89,9 @@ class PaymentAuthWebViewNavigationDelegate: NSObject, WKNavigationDelegate {
     }
 }
 
-protocol TransactionAuthorizationFlowDelegate {
+public protocol TransactionAuthorizationFlowDelegate {
     func threeDs1Result(status: String, clientSecret: String)
     func redirectingToAcs()
-    func acsLoadFinished()
     func acsAuthenticationFinished()
 }
 

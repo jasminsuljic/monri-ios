@@ -12,13 +12,19 @@ import Alamofire
 class MonriPaymentApiTest: XCTestCase {
 
     // TODO: replace with your merchant's authenticity monriToken
-    let authenticityToken = "6a13d79bde8da9320e88923cb3472fb638619ccb";
+    let authenticityToken = "6a13d79bde8da9320e88923cb3472fb638619ccb"
     //TODO: replace with your merchant's merchant key
-    let merchantKey = "TestKeyXULLyvgWyPJSwOHe";
+    let merchantKey = "TestKeyXULLyvgWyPJSwOHe"
 
     static let non3DSCard = Card(number: "4111 1111 1111 1111", cvc: "123", expMonth: 10, expYear: 2031).toPaymentMethodParams()
     static let threeDSCard = Card(number: "4341 7920 0000 0044", cvc: "123", expMonth: 10, expYear: 2031).toPaymentMethodParams()
 
+    lazy var monri: MonriApi = {
+        [unowned self] in
+        let currentViewController = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        return MonriApi(currentViewController, options: MonriApiOptions(authenticityToken: authenticityToken, developmentMode: true));
+    }()
+    
     var monriHttpApi: MonriHttpApi!
 
     override func setUpWithError() throws {
@@ -370,4 +376,5 @@ class MonriPaymentApiTest: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
 }

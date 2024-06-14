@@ -7,11 +7,7 @@ import os.log
 
 class ActionRequiredFlowImpl: ActionRequiredFlow {
 
-//    private final PaymentAuthWebView webView;
-//    private final ProgressBar progressBar;
-//    private final MonriApi monriApi;
-
-    weak var vc: ConfirmPaymentControllerViewController?
+    private var uiDelegate: UiDelegate
     private let clientSecret: String
 
     let atomicInteger = AtomicInteger()
@@ -22,35 +18,19 @@ class ActionRequiredFlowImpl: ActionRequiredFlow {
     }
 
     var invocationState: InvocationState = InvocationState.CALLBACK_NOT_INVOKED
-    let navigationDelegate: PaymentAuthWebViewNavigationDelegate
 
-    init(vc: ConfirmPaymentControllerViewController,
-         navigationDelegate: PaymentAuthWebViewNavigationDelegate,
+    init(uiDelegate: UiDelegate,
          monriApi: MonriHttpApi,
          clientSecret: String) {
-        self.vc = vc
-        self.navigationDelegate = navigationDelegate
+        self.uiDelegate = uiDelegate
         self.monriApi = monriApi
         self.clientSecret = clientSecret
-        vc.navigationDelegate.flowDelegate = self
-    }
-
-    func executeIfVc(action: String, _ callable: (ConfirmPaymentControllerViewController) -> Void) {
-        guard let vc = vc else {
-            logger.info("Tried executing \(action), vc is nil")
-            return
-        }
-
-        callable(vc)
+        self.uiDelegate.setFlowDelegate(delegate: self)
     }
 
     func handleResult(_ response: ConfirmPaymentResponse) {
         logger.trace("Received response [\(response.status.rawValue)]")
-        guard let vc = vc else {
-            logger.fatal("Invoked without available ViewController! Payment id = [\(response.status)]")
-            return
-        }
-
+        
         guard let actionRequired = response.actionRequired else {
             logger.fatal("Invoked with nil action required \(response.status)")
             return
@@ -63,16 +43,15 @@ class ActionRequiredFlowImpl: ActionRequiredFlow {
                 return
             }
 
-            navigationDelegate.acsUrl = acsUrl
 
             logger.info("Handle result invoked with acsUrl = \(acsUrl)")
 
             DispatchQueue.main.async {
-                vc.indicator.isHidden = false
-                vc.webView.isHidden = true
-                vc.webView.load(redirectUrl)
+                self.uiDelegate.showLoading()
+                self.uiDelegate.hideWebView()
+                self.uiDelegate.loadWebViewUrl(url: redirectUrl)
             }
-        });
+        })
 
     }
 
@@ -97,16 +76,10 @@ extension ActionRequiredFlowImpl: TransactionAuthorizationFlowDelegate {
 
     func threeDs1Result(status: String, clientSecret: String) {
         logger.info("ThreeDs1Result, status = \(status), clientSecret = \(clientSecret)");
-        
-        guard let vc = vc else {
-            logger.info("Tried executing threeDs1Result:\(status), vc is nil")
-            return
-        }
 
         DispatchQueue.main.async {
-            vc.indicator.isHidden = false
-            vc.indicator.startAnimating()
-            vc.webView.isHidden = true
+            self.uiDelegate.hideWebView()
+            self.uiDelegate.showLoading()
         }
 
         checkPaymentStatus(clientSecret: clientSecret, count: atomicInteger.incrementAndGet())
@@ -114,19 +87,20 @@ extension ActionRequiredFlowImpl: TransactionAuthorizationFlowDelegate {
 
     func checkPaymentStatus(clientSecret: String, count: Int) {
         if (count >= 3) {
-            self.executeIfVc(action: "checkPaymentStatus") { vc in
-                logger.info("Retry count exceeded \(count)")
-                vc.paymentStatusRetryExceeded()
-            }
+            logger.info("Retry count exceeded \(count)")
+            uiDelegate.pending()
         } else {
             monriApi.paymentStatus(PaymentStatusParams(clientSecret: clientSecret)) {
                 result in
-                self.executeIfVc(action: "paymentStatus") { vc in
-                    switch (result) {
-                    case .error:
-                        self.checkPaymentStatus(clientSecret: clientSecret, count: self.atomicInteger.incrementAndGet())
-                    case .result(let r):
-                        vc.resultReceived(statusResponse: r);
+                
+                switch (result) {
+                case .error:
+                    self.checkPaymentStatus(clientSecret: clientSecret, count: self.atomicInteger.incrementAndGet())
+                case .result(let r):
+                    if let paymentResult = r.paymentResult {
+                        self.uiDelegate.handlePaymentResult(paymentResult: ConfirmPaymentResult.result(paymentResult))
+                    } else {
+                        self.uiDelegate.pending()
                     }
                 }
             }
@@ -134,47 +108,38 @@ extension ActionRequiredFlowImpl: TransactionAuthorizationFlowDelegate {
     }
 
     func redirectingToAcs() {
-        executeIfVc(action: "redirectingToAcs") { vc in
-            executeIfStatus(InvocationState.HANDLE_RESULT, InvocationState.REDIRECTING_TO_ACS, {
+        executeIfStatus(InvocationState.HANDLE_RESULT, InvocationState.REDIRECTING_TO_ACS, {
 
-                logger.info("redirectingToAcs");
+            logger.info("redirectingToAcs");
 
-                DispatchQueue.main.async {
-                    vc.webView.isHidden = false
-                    vc.indicator.isHidden = true
-                    vc.indicator.stopAnimating()
-                }
-            })
-        }
+            DispatchQueue.main.async {
+                self.uiDelegate.showWebView()
+                self.uiDelegate.hideLoading()
+            }
+        })
     }
 
     func acsLoadFinished() {
-        executeIfVc(action: "acsLoadFinished") { vc in
-            executeIfStatus(InvocationState.REDIRECTING_TO_ACS, InvocationState.ACS_LOAD_FINISHED, {
+        executeIfStatus(InvocationState.REDIRECTING_TO_ACS, InvocationState.ACS_LOAD_FINISHED, {
 
-                logger.info("acsLoadFinished");
+            logger.info("acsLoadFinished");
 
-                DispatchQueue.main.async {
-                    vc.webView.isHidden = false
-                    vc.indicator.isHidden = true
-                    vc.indicator.stopAnimating()
-                }
-            })
-        }
+            DispatchQueue.main.async {
+                self.uiDelegate.showWebView()
+                self.uiDelegate.hideLoading()
+            }
+        })
     }
 
     func acsAuthenticationFinished() {
-        executeIfVc(action: "acsAuthenticationFinished") { vc in
-            executeIfStatus(InvocationState.REDIRECTING_TO_ACS, InvocationState.ACS_AUTHENTICATION_FINISHED, {
+        executeIfStatus(InvocationState.REDIRECTING_TO_ACS, InvocationState.ACS_AUTHENTICATION_FINISHED, {
 
-                logger.info("acsAuthenticationFinished");
+            logger.info("acsAuthenticationFinished");
 
-                DispatchQueue.main.async {
-                    vc.webView.isHidden = true
-                    vc.indicator.isHidden = false
-                    vc.indicator.startAnimating()
-                }
-            })
-        }
+            DispatchQueue.main.async {
+                self.uiDelegate.hideWebView()
+                self.uiDelegate.showLoading()
+            }
+        })
     }
 }

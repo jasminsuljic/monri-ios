@@ -5,12 +5,12 @@
 import Foundation
 
 class UnknownFlowImpl: UnknownFlow {
-    weak var vc: ConfirmPaymentControllerViewController?
+    private var uiDelegate: UiDelegate
 
     private let clientSecret: String
 
-    init(vc: ConfirmPaymentControllerViewController?, clientSecret: String) {
-        self.vc = vc
+    init(uiDelegate: UiDelegate, clientSecret: String) {
+        self.uiDelegate = uiDelegate
         self.clientSecret = clientSecret
     }
 

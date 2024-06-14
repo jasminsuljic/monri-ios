@@ -37,6 +37,6 @@ extension SavedCard: PaymentMethod {
     }
 
     public func toPaymentMethodParams() -> PaymentMethodParams {
-        return PaymentMethodParams(type: "saved_card", data: data())
+        return PaymentMethodParams(type: paymentMethodType().rawValue, data: data())
     }
 }

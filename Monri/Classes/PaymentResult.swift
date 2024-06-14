@@ -43,7 +43,7 @@ public class PaymentResult {
     //("errors")
     public let errors: [String]
 
-    init(status: String, currency: String?, amount: Int?, orderNumber: String?, panToken: String?, createdAt: String?, transactionType: String?, paymentMethod: SavedPaymentMethod?, errors: [String]) {
+    public init(status: String, currency: String?, amount: Int?, orderNumber: String?, panToken: String?, createdAt: String?, transactionType: String?, paymentMethod: SavedPaymentMethod?, errors: [String]) {
         self.status = status
         self.currency = currency
         self.amount = amount
