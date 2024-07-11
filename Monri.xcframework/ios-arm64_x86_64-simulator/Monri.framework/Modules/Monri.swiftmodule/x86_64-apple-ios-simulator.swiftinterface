@@ -1,0 +1,552 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 effective-4.2 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target x86_64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name Monri
+import Alamofire
+import Foundation
+@_exported import Monri
+import Swift
+import UIKit
+import WebKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os.log
+import os
+final public class AtomicInteger {
+  public init(value initialValue: Swift.Int = 0)
+  final public var value: Swift.Int {
+    get
+    set
+  }
+  final public func decrementAndGet() -> Swift.Int
+  final public func incrementAndGet() -> Swift.Int
+  @objc deinit
+}
+public struct Card {
+  public var number: Swift.String
+  public var cvc: Swift.String
+  public var expMonth: Swift.Int
+  public var expYear: Swift.Int
+  public var tokenizePan: Swift.Bool
+  public var last4: Swift.String {
+    get
+  }
+  public var type: Monri.CardType? {
+    get
+  }
+  public init(number: Swift.String, cvc: Swift.String, expMonth: Swift.Int, expYear: Swift.Int)
+  public init(number: Swift.String, cvc: Swift.String, expMonth: Swift.Int, expYear: Swift.Int, tokenizePan: Swift.Bool)
+  public func validateNumber() -> Swift.Bool
+  public func validateCVC() -> Swift.Bool
+  public func validateExpiryDate() -> Swift.Bool
+  public func validateCard() -> Swift.Bool
+}
+extension Monri.Card : Monri.PaymentMethod {
+  public func paymentMethodType() -> Monri.PaymentMethodType
+  public func data() -> [Swift.String : Any]
+  public func toPaymentMethodParams() -> Monri.PaymentMethodParams
+}
+final public class ConfirmDirectPaymentFlowImpl {
+  public init(uiDelegate: any Monri.UiDelegate, apiOptions: Monri.MonriApiOptions, monriApi: Monri.MonriApi, confirmPaymentParams: Monri.ConfirmPaymentParams)
+  final public func execute()
+  @objc deinit
+}
+public enum ConfirmPaymentError : Swift.Error {
+  case requestFailed(Swift.String)
+  case confirmPaymentFailed
+  case jsonParsingError(Swift.String)
+}
+public class ConfirmPaymentParams {
+  final public let paymentId: Swift.String
+  final public let paymentMethod: Monri.PaymentMethodParams
+  final public let transaction: Monri.TransactionParams
+  public init(paymentId: Swift.String, paymentMethod: Monri.PaymentMethodParams, transaction: Monri.TransactionParams)
+  @objc deinit
+}
+public class ConfirmPaymentResponse {
+  final public let status: Monri.PaymentStatus
+  final public let actionRequired: Monri.PaymentActionRequired?
+  final public let paymentResult: Monri.PaymentResult?
+  public init(status: Monri.PaymentStatus, actionRequired: Monri.PaymentActionRequired?, paymentResult: Monri.PaymentResult?)
+  @objc deinit
+}
+public typealias ConfirmPaymentResultCallback = (Monri.ConfirmPaymentResult) -> Swift.Void
+public typealias ConfirmPaymentCallback = (Monri.ConfirmPayment) -> Swift.Void
+public enum ConfirmPaymentResult {
+  case result(Monri.PaymentResult)
+  case declined(Monri.ConfirmPaymentDeclined)
+  case pending
+  case error(Monri.PaymentResultError)
+}
+public struct ConfirmPaymentDeclined {
+  public let status: Swift.String
+  public let clientSecret: Swift.String
+  public init(status: Swift.String, clientSecret: Swift.String)
+}
+public enum PaymentResultError : Swift.Error {
+  case requestFailed
+  case confirmPaymentFailed
+  case jsonParsingError(Swift.String)
+  case error(any Swift.Error)
+}
+public enum ConfirmPayment {
+  case result(Monri.ConfirmPaymentResponse)
+  case pending
+  case error(Monri.ConfirmPaymentError)
+  case unknownError(any Swift.Error)
+}
+public class CreateCustomerParams {
+  final public let accessToken: Swift.String
+  final public let customerData: Monri.CustomerData
+  public init(accessToken: Swift.String, customerData: Monri.CustomerData)
+  @objc deinit
+}
+public typealias CustomerCallback = (Monri.CustomerResult) -> Swift.Void
+public enum CustomerResult {
+  case result(Monri.Customer)
+  case error(Monri.CustomerApiError)
+}
+public class Customer {
+  final public let status: Swift.String?
+  final public let uuid: Swift.String?
+  final public let merchantCustomerUuid: Swift.String?
+  final public let description: Swift.String?
+  final public let email: Swift.String?
+  final public let name: Swift.String?
+  final public let phone: Swift.String?
+  final public let metadata: Swift.Dictionary<Swift.String, Swift.String>?
+  final public let zipCode: Swift.String?
+  final public let city: Swift.String?
+  final public let address: Swift.String?
+  final public let country: Swift.String?
+  final public let deleted: Swift.String?
+  final public let createdAt: Swift.String?
+  final public let updatedAt: Swift.String?
+  final public let deletedAt: Swift.String?
+  public init(status: Swift.String?, uuid: Swift.String?, merchantCustomerUuid: Swift.String?, description: Swift.String?, email: Swift.String?, name: Swift.String?, phone: Swift.String?, metadata: Swift.Dictionary<Swift.String, Swift.String>?, zipCode: Swift.String?, city: Swift.String?, address: Swift.String?, country: Swift.String?, deleted: Swift.String?, createdAt: Swift.String?, updatedAt: Swift.String?, deletedAt: Swift.String?)
+  public static func fromJson(_ json: Swift.Dictionary<Swift.String, Any>?) -> Monri.Customer?
+  @objc deinit
+}
+public class CustomerApi {
+  final public let httpApi: any Monri.MonriHttpApi
+  public init(_ httpApi: any Monri.MonriHttpApi)
+  public func create(_ createCustomerParams: Monri.CreateCustomerParams, _ callback: @escaping Monri.CustomerCallback)
+  public func update(_ updateCustomerParams: Monri.UpdateCustomerParams, _ callback: @escaping Monri.CustomerCallback)
+  public func delete(_ deleteCustomerParams: Monri.DeleteCustomerParams, _ callback: @escaping Monri.DeleteCustomerCallback)
+  public func get(_ retrieveCustomerParams: Monri.RetrieveCustomerParams, _ callback: @escaping Monri.CustomerCallback)
+  public func getViaMerchantCustomerUuid(_ retrieveCustomerViaMerchantCustomerUuidParams: Monri.RetrieveCustomerViaMerchantCustomerUuidParams, _ callback: @escaping Monri.CustomerCallback)
+  public func paymentMethods(_ customerPaymentMethodParams: Monri.CustomerPaymentMethodParams, _ callback: @escaping Monri.CustomerPaymentMethodResponseCallback)
+  public func all(_ accessToken: Swift.String, _ callback: @escaping Monri.MerchantCustomersCallback)
+  @objc deinit
+}
+public enum CustomerApiError : Swift.Error {
+  case requestFailed(Swift.String)
+  case customerFailed
+  case jsonParsingError(Swift.String)
+  case unknownError(any Swift.Error)
+}
+public class CustomerData {
+  public var merchantCustomerUuid: Swift.String?
+  public var description: Swift.String?
+  public var email: Swift.String?
+  public var name: Swift.String?
+  public var phone: Swift.String?
+  public var metadata: Swift.Dictionary<Swift.String, Swift.String>?
+  public var zipCode: Swift.String?
+  public var city: Swift.String?
+  public var address: Swift.String?
+  public var country: Swift.String?
+  public init(merchantCustomerUuid: Swift.String? = nil, description: Swift.String? = nil, email: Swift.String? = nil, name: Swift.String? = nil, phone: Swift.String? = nil, metadata: Swift.Dictionary<Swift.String, Swift.String>? = nil, zipCode: Swift.String? = nil, city: Swift.String? = nil, address: Swift.String? = nil, country: Swift.String? = nil)
+  public func setMerchantCustomerUuid(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setDescription(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setEmail(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setName(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setPhone(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setMetadata(_ newValue: Swift.Dictionary<Swift.String, Swift.String>) -> Monri.CustomerData
+  public func setZipCode(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setCity(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setAddress(_ newValue: Swift.String) -> Monri.CustomerData
+  public func setCountry(_ newValue: Swift.String) -> Monri.CustomerData
+  @objc deinit
+}
+public class CustomerParams {
+  final public let customerUuid: Swift.String?
+  final public let email: Swift.String?
+  final public let fullName: Swift.String?
+  final public let address: Swift.String?
+  final public let city: Swift.String?
+  final public let zip: Swift.String?
+  final public let phone: Swift.String?
+  final public let country: Swift.String?
+  public init(customerUuid: Swift.String? = nil, email: Swift.String?, fullName: Swift.String?, address: Swift.String?, city: Swift.String?, zip: Swift.String?, phone: Swift.String?, country: Swift.String?)
+  @objc deinit
+}
+public class CustomerPaymentMethod {
+  final public let status: Swift.String?
+  final public let id: Swift.String?
+  final public let maskedPan: Swift.String?
+  final public let expirationDate: Swift.String?
+  final public let keepUntil: Swift.String?
+  final public let createdAt: Swift.String?
+  final public let updatedAt: Swift.String?
+  final public let customerUuid: Swift.String?
+  final public let token: Swift.String?
+  final public let expired: Swift.Bool?
+  public init(status: Swift.String?, id: Swift.String?, maskedPan: Swift.String?, expirationDate: Swift.String?, keepUntil: Swift.String?, createdAt: Swift.String?, updatedAt: Swift.String?, customerUuid: Swift.String?, token: Swift.String?, expired: Swift.Bool?)
+  @objc deinit
+}
+public class CustomerPaymentMethodParams {
+  final public let customerUuid: Swift.String
+  final public let limit: Swift.UInt32
+  final public let offset: Swift.UInt32
+  final public let accessToken: Swift.String
+  public init(customerUuid: Swift.String, limit: Swift.UInt32, offset: Swift.UInt32, accessToken: Swift.String)
+  @objc deinit
+}
+public typealias CustomerPaymentMethodResponseCallback = (Monri.CustomerPaymentMethodResponseResult) -> Swift.Void
+public enum CustomerPaymentMethodResponseResult {
+  case result(Monri.CustomerPaymentMethodResponse)
+  case error(Monri.CustomerApiError)
+}
+public class CustomerPaymentMethodResponse {
+  final public let status: Swift.String
+  final public let customerPaymentMethod: [Monri.CustomerPaymentMethod]
+  public init(status: Swift.String, customerPaymentMethod: [Monri.CustomerPaymentMethod])
+  @objc deinit
+}
+public class DeleteCustomerParams {
+  final public let customerUuid: Swift.String
+  final public let accessToken: Swift.String
+  public init(customerUuid: Swift.String, accessToken: Swift.String)
+  @objc deinit
+}
+public typealias DeleteCustomerCallback = (Monri.DeleteCustomerResult) -> Swift.Void
+public enum DeleteCustomerResult {
+  case result(Monri.DeleteCustomerResponse)
+  case error(Monri.CustomerApiError)
+}
+public class DeleteCustomerResponse {
+  final public let status: Swift.String
+  final public let uuid: Swift.String
+  final public let deleted: Swift.Bool
+  public init(status: Swift.String, uuid: Swift.String, deleted: Swift.Bool)
+  @objc deinit
+}
+public class DirectPayment {
+  public init(paymentProvider: Monri.DirectPayment.Provider)
+  @objc deinit
+}
+extension Monri.DirectPayment : Monri.PaymentMethod {
+  public func paymentMethodType() -> Monri.PaymentMethodType
+  public func data() -> [Swift.String : Any]
+  public func toPaymentMethodParams() -> Monri.PaymentMethodParams
+}
+extension Monri.DirectPayment {
+  public enum Provider {
+    case PAY_CEK_HR
+    public static func == (a: Monri.DirectPayment.Provider, b: Monri.DirectPayment.Provider) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+}
+public protocol Delegate {
+  func onPageLoadFinished()
+}
+public typealias MerchantCustomersCallback = (Monri.MerchantCustomersResult) -> Swift.Void
+public enum MerchantCustomersResult {
+  case result(Monri.MerchantCustomers)
+  case error(Monri.CustomerApiError)
+}
+@_hasMissingDesignatedInitializers public class MerchantCustomers {
+  final public let status: Swift.String
+  final public let customerResponseArray: [Monri.Customer]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class MetaUtility {
+  public static let INTEGRATION_TYPE_KEY: Swift.String
+  public static let LIBRARY_KEY: Swift.String
+  public static let LIBRARY_VERSION_KEY: Swift.String
+  public static let META_KEYS: [Swift.String]
+  @objc deinit
+}
+final public class MonriApi {
+  final public var httpApi: any Monri.MonriHttpApi
+  convenience public init(_ vc: UIKit.UIViewController, authenticityToken: Swift.String)
+  public init(_ vc: UIKit.UIViewController, options: Monri.MonriApiOptions)
+  final public func createToken(_ request: Monri.TokenRequest, paymentMethod: any Monri.PaymentMethod, _ callback: @escaping Monri.TokenResultCallback)
+  final public func confirmPayment(_ confirmPaymentParams: Monri.ConfirmPaymentParams, _ callback: @escaping Monri.ConfirmPaymentResultCallback)
+  final public func paymentStatus(_ params: Monri.PaymentStatusParams)
+  final public func createToken(_ request: Monri.TokenRequest, card: Monri.Card, _ callback: @escaping Monri.TokenResultCallback)
+  final public func customers() -> Monri.CustomerApi
+  @objc deinit
+}
+public class MonriApiOptions {
+  final public let authenticityToken: Swift.String
+  final public let developmentMode: Swift.Bool
+  public var apiUrl: Swift.String {
+    get
+  }
+  public init(authenticityToken: Swift.String, developmentMode: Swift.Bool)
+  @objc deinit
+}
+public class MonriFactory {
+  public init()
+  public func createHttpApi(options: Monri.MonriApiOptions, httpClient: (any Monri.MonriHttpClient)? = nil) -> any Monri.MonriHttpApi
+  public func createHttpClient() -> any Monri.MonriHttpClient
+  @objc deinit
+}
+public protocol MonriHttpApi {
+  func confirmPayment(_ params: Monri.ConfirmPaymentParams, _ callback: @escaping Monri.ConfirmPaymentCallback)
+  func paymentStatus(_ params: Monri.PaymentStatusParams, _ callback: @escaping Monri.PaymentStatusResponseResultCallback)
+  func createToken(_ request: Monri.TokenRequest, paymentMethod: any Monri.PaymentMethod, _ callback: @escaping Monri.TokenResultCallback)
+  func createCustomer(_ params: Monri.CreateCustomerParams, _ callback: @escaping Monri.CustomerCallback)
+  func updateCustomer(_ params: Monri.UpdateCustomerParams, _ callback: @escaping Monri.CustomerCallback)
+  func deleteCustomer(_ params: Monri.DeleteCustomerParams, _ callback: @escaping Monri.DeleteCustomerCallback)
+  func retrieveCustomer(_ params: Monri.RetrieveCustomerParams, _ callback: @escaping Monri.CustomerCallback)
+  func retrieveCustomerViaMerchantCustomerUuid(_ params: Monri.RetrieveCustomerViaMerchantCustomerUuidParams, _ callback: @escaping Monri.CustomerCallback)
+  func retrieveAllCustomers(_ accessToken: Swift.String, _ callback: @escaping Monri.MerchantCustomersCallback)
+  func retrieveCustomerPaymentMethods(_ params: Monri.CustomerPaymentMethodParams, _ callback: @escaping Monri.CustomerPaymentMethodResponseCallback)
+}
+public protocol MonriHttpClient {
+  func jsonPost(url: Swift.String, body: [Swift.String : Any], headers: [Swift.String : Swift.String], _ callback: @escaping (Monri.MonriHttpClientResponse) -> Swift.Void)
+  func jsonGet(url: Swift.String, headers: [Swift.String : Swift.String], _ callback: @escaping (Monri.MonriHttpClientResponse) -> Swift.Void)
+  func jsonDelete(url: Swift.String, headers: [Swift.String : Swift.String], _ callback: @escaping (Monri.MonriHttpClientResponse) -> Swift.Void)
+}
+public enum MonriHttpClientResponse {
+  case success(body: [Swift.String : Any], statusCode: Swift.Int, headers: [Swift.AnyHashable : Any])
+  case failure(body: [Swift.String : Any], statusCode: Swift.Int, headers: [Swift.AnyHashable : Any])
+  case error(Monri.MonriHttpClientError)
+}
+public enum MonriHttpClientError : Swift.Error {
+  case responseDataMissing
+  case jsonParsingError(Swift.String)
+  case responseParsingError(any Swift.Error)
+}
+@_hasMissingDesignatedInitializers public class PaymentActionRequired {
+  final public let redirectTo: Swift.String
+  final public let acsUrl: Swift.String
+  @objc deinit
+}
+public protocol TransactionAuthorizationFlowDelegate {
+  func threeDs1Result(status: Swift.String, clientSecret: Swift.String)
+  func redirectingToAcs()
+  func acsAuthenticationFinished()
+}
+public enum PaymentMethodType : Swift.String {
+  case newCard
+  case savedCard
+  case payCekHr
+  public static let directPayments: [Monri.PaymentMethodType]
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol PaymentMethod {
+  func paymentMethodType() -> Monri.PaymentMethodType
+  func data() -> [Swift.String : Any]
+  func toPaymentMethodParams() -> Monri.PaymentMethodParams
+}
+public class PaymentMethodParams {
+  public init(type: Swift.String, data: Swift.Dictionary<Swift.String, Any>)
+  public func toJSON() -> Swift.Dictionary<Swift.String, Any>
+  @objc deinit
+}
+public class PaymentResult {
+  final public let status: Swift.String
+  final public let currency: Swift.String?
+  final public let amount: Swift.Int?
+  final public let orderNumber: Swift.String?
+  final public let panToken: Swift.String?
+  final public let createdAt: Swift.String?
+  final public let transactionType: Swift.String?
+  final public let paymentMethod: (any Monri.SavedPaymentMethod)?
+  final public let errors: [Swift.String]
+  public init(status: Swift.String, currency: Swift.String?, amount: Swift.Int?, orderNumber: Swift.String?, panToken: Swift.String?, createdAt: Swift.String?, transactionType: Swift.String?, paymentMethod: (any Monri.SavedPaymentMethod)?, errors: [Swift.String])
+  public func toJSON() -> Swift.Dictionary<Swift.String, Any?>
+  @objc deinit
+}
+public protocol PaymentResultCallback : AnyObject {
+  func onSuccess(result: Monri.PaymentResult)
+  func onError(error: any Swift.Error)
+}
+public enum PaymentStatus : Swift.String {
+  case approved
+  case declined
+  case executed
+  case action_required
+  case payment_method_required
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum PaymentStatusError {
+  case requestFailed(Swift.String)
+  case confirmPaymentFailed
+  case jsonParsingError(Swift.String)
+  case unknownError(any Swift.Error)
+}
+public class PaymentStatusParams {
+  public init(clientSecret: Swift.String)
+  @objc deinit
+}
+public class PaymentStatusResponse {
+  final public let paymentStatus: Monri.PaymentStatus
+  final public let status: Swift.String
+  final public let paymentResult: Monri.PaymentResult?
+  public init(paymentStatus: Monri.PaymentStatus, status: Swift.String, paymentResult: Monri.PaymentResult?)
+  public static func fromJson(_ json: Swift.Dictionary<Swift.String, Any>) -> Monri.PaymentStatusResponse?
+  @objc deinit
+}
+public typealias PaymentStatusResponseResultCallback = (Monri.PaymentStatusResponseResult) -> Swift.Void
+public enum PaymentStatusResponseResult {
+  case result(Monri.PaymentStatusResponse)
+  case error(Monri.PaymentStatusError)
+}
+public class RetrieveCustomerParams {
+  final public let accessToken: Swift.String
+  final public let customerUuid: Swift.String
+  public init(accessToken: Swift.String, customerUuid: Swift.String)
+  @objc deinit
+}
+public class RetrieveCustomerViaMerchantCustomerUuidParams {
+  final public let accessToken: Swift.String
+  final public let merchantCustomerUuid: Swift.String
+  public init(accessToken: Swift.String, merchantCustomerUuid: Swift.String)
+  @objc deinit
+}
+public struct SavedCard {
+  public init(panToken: Swift.String, cvc: Swift.String?)
+}
+extension Monri.SavedCard : Monri.PaymentMethod {
+  public func paymentMethodType() -> Monri.PaymentMethodType
+  public func data() -> [Swift.String : Any]
+  public func toPaymentMethodParams() -> Monri.PaymentMethodParams
+}
+@_hasMissingDesignatedInitializers public class SavedCardPaymentMethod : Monri.SavedPaymentMethod {
+  final public let type: Swift.String
+  final public let data: Swift.Dictionary<Swift.String, Swift.String>
+  final public let parsedData: Monri.SavedCardPaymentMethodData
+  @objc deinit
+}
+public struct SavedCardPaymentMethodData {
+  public let brand: Swift.String
+  public let issuer: Swift.String
+  public let masked: Swift.String
+  public let expirationDate: Swift.String
+  public let token: Swift.String
+  public init(brand: Swift.String, issuer: Swift.String, masked: Swift.String, expirationDate: Swift.String, token: Swift.String)
+  public func toJSON() -> Swift.Dictionary<Swift.String, Swift.String>
+}
+public protocol SavedPaymentMethod {
+  var type: Swift.String { get }
+  var data: Swift.Dictionary<Swift.String, Swift.String> { get }
+}
+extension Monri.SavedPaymentMethod {
+  public func toJSON() -> Swift.Dictionary<Swift.String, Any>
+}
+public func cardType(cardNumber: Swift.String) -> Monri.CardType?
+public func suggestedCardType(cardNumber: Swift.String) -> Monri.CardType?
+public func formatCardNumber(_ cardNumber: Swift.String) -> Swift.String
+public enum CardType : Swift.Int {
+  case amex
+  case visa
+  case mastercard
+  case discover
+  case dinersClub
+  case jcb
+  case maestro
+  case rupay
+  case mir
+  case dinacard
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum CardError : Swift.Error {
+  case unsupported
+  case invalid
+  public static func == (a: Monri.CardError, b: Monri.CardError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension Monri.CardType {
+  public func stringValue() -> Swift.String
+  public init?(string: Swift.String)
+}
+public struct Token {
+  public let id: Swift.String
+}
+public typealias TokenResultCallback = (Monri.TokenResult) -> Swift.Void
+public protocol TokenCallback {
+  func onSuccess(_ token: Monri.Token)
+  func onError(_ error: any Swift.Error)
+}
+public enum TokenError : Swift.Error {
+  case invalidTokenRequest(Swift.String)
+  case invalidCard(Swift.String)
+  case invalidCardNumber
+  case invalidCVV
+  case invalidExpirationMonth
+  case invalidExpirationYear
+  case invalidExpirationDate
+  case createTokenRequestError
+  case tokenizationFailed
+  case jsonParsingError(Swift.String)
+  case error(any Swift.Error)
+}
+public typealias ValidationError = Monri.TokenError
+public struct TokenRequest {
+  public init(token: Swift.String, digest: Swift.String, timestamp: Swift.String)
+}
+public enum TokenResult {
+  case token(Monri.Token)
+  case error(Monri.TokenError)
+}
+@_hasMissingDesignatedInitializers public class TransactionParams {
+  public static func create() -> Monri.TransactionParams
+  public func set(_ key: Swift.String, _ value: Swift.String?) -> Monri.TransactionParams
+  public func set(customerParams: Monri.CustomerParams) -> Monri.TransactionParams
+  @objc deinit
+}
+public protocol UiDelegate {
+  func showLoading()
+  func hideLoading()
+  func showWebView()
+  func loadWebViewUrl(url: Foundation.URLRequest)
+  func hideWebView()
+  func handlePaymentResult(paymentResult: Monri.ConfirmPaymentResult)
+  func pending()
+  func setFlowDelegate(delegate: any Monri.TransactionAuthorizationFlowDelegate)
+}
+public class UpdateCustomerParams {
+  final public let customerData: Monri.CustomerData
+  final public let customerUuid: Swift.String
+  final public let accessToken: Swift.String
+  public init(customerData: Monri.CustomerData, customerUuid: Swift.String, accessToken: Swift.String)
+  @objc deinit
+}
+public func removeNonDigits(_ val: Swift.String) -> Swift.String
+public func isValidCardNumber(_ cardNumber: Swift.String) -> Swift.Bool
+extension Monri.DirectPayment.Provider : Swift.Equatable {}
+extension Monri.DirectPayment.Provider : Swift.Hashable {}
+extension Monri.PaymentMethodType : Swift.Equatable {}
+extension Monri.PaymentMethodType : Swift.Hashable {}
+extension Monri.PaymentMethodType : Swift.RawRepresentable {}
+extension Monri.PaymentStatus : Swift.Equatable {}
+extension Monri.PaymentStatus : Swift.Hashable {}
+extension Monri.PaymentStatus : Swift.RawRepresentable {}
+extension Monri.CardType : Swift.Equatable {}
+extension Monri.CardType : Swift.Hashable {}
+extension Monri.CardType : Swift.RawRepresentable {}
+extension Monri.CardError : Swift.Equatable {}
+extension Monri.CardError : Swift.Hashable {}

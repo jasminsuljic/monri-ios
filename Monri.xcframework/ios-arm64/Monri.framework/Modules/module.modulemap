@@ -1,0 +1,11 @@
+framework module Monri {
+  umbrella header "Monri-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module Monri.Swift {
+  header "Monri-Swift.h"
+  requires objc
+}
