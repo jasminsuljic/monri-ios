@@ -7,9 +7,10 @@ We also expose the low-level APIs that power those elements to make it easy to b
 ## Installation/Configuration
 
 ### Install and configure the SDK
-You can choose to install the Monri iOS SDK via CocoaPods.
+You can choose to install the Monri iOS SDK via CocoaPods or via Swift Package Manager.
 
-CocoaPods:
+####CocoaPods
+
 1. If you haven't already, install the latest version of [CocoaPods](https://guides.cocoapods.org/using/getting-started.html)
 2. Add this line to your Podfile:
 ```ruby
@@ -26,6 +27,16 @@ pod update Monri
 ```
 
 For full installation/configuration guide check our wiki page at [Installation Guide](https://github.com/MonriPayments/monri-ios/wiki/Installation-Guide)
+
+####Swift Package Manager 
+
+To install Monri iOS SDK via Swift Package Manager, add the following to your Package.swift file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/MonriPayments/monri-ios", .upToNextMajor(from: "3.0.0"))
+]
+```
 
 ## Version 1.5.0
 
