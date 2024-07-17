@@ -222,9 +222,9 @@ class MonriPaymentApiTest: XCTestCase {
         expect(error).to(beNil())
         expect(confirmPaymentStatus).to(equal("action_required"))
         expect(confirmPaymentResponse).notTo(beNil())
-        expect(confirmPaymentResponse!.actionRequired).notTo(beNil())
-        expect(confirmPaymentResponse!.actionRequired!.acsUrl).notTo(beNil())
-        expect(confirmPaymentResponse!.actionRequired!.redirectTo).notTo(beNil())
+        expect(confirmPaymentResponse?.actionRequired).notTo(beNil())
+        expect(confirmPaymentResponse?.actionRequired?.acsUrl).notTo(beNil())
+        expect(confirmPaymentResponse?.actionRequired?.redirectTo).notTo(beNil())
     }
 
     func testPaymentStatus() throws {

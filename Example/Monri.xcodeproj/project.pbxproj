@@ -53,7 +53,7 @@
 		9980E843C05AB8F0FC1EB398 /* NewPaymentResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPaymentResponse.swift; sourceTree = "<group>"; };
 		9980E8FCB5B1A7857DEAEF43 /* OrdersRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrdersRepository.swift; sourceTree = "<group>"; };
 		9980EC8C91320D3B68241779 /* MonriPaymentApiTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonriPaymentApiTest.swift; sourceTree = "<group>"; };
-		A264B12287B435CC4971019D /* Monri.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Monri.podspec; path = ../Monri.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A264B12287B435CC4971019D /* Monri.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Monri.podspec; path = ../Monri.podspec; sourceTree = "<group>"; };
 		BB2CA01E3DAC8BDABD3B9190 /* Pods-Monri_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Monri_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Monri_Tests/Pods-Monri_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE15D9712BC90D3B00C82C59 /* ConfirmDirectPaymentFlowTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDirectPaymentFlowTest.swift; sourceTree = "<group>"; };
 		BE15D9742BC90DB000C82C59 /* FakeMonriHttpApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMonriHttpApi.swift; sourceTree = "<group>"; };
