@@ -40,10 +40,16 @@ public class PaymentResult {
     //("payment_method")
     public let paymentMethod: SavedPaymentMethod?
 
+	//("response_code")
+	public let responseCode: String?
+	
+	//("response_message")
+	public let responseMessage: String?
+
     //("errors")
     public let errors: [String]
 
-    public init(status: String, currency: String?, amount: Int?, orderNumber: String?, panToken: String?, createdAt: String?, transactionType: String?, paymentMethod: SavedPaymentMethod?, errors: [String]) {
+    public init(status: String, currency: String?, amount: Int?, orderNumber: String?, panToken: String?, createdAt: String?, transactionType: String?, paymentMethod: SavedPaymentMethod?, responseCode: String?, responseMessage: String?, errors: [String]) {
         self.status = status
         self.currency = currency
         self.amount = amount
@@ -53,6 +59,8 @@ public class PaymentResult {
         self.transactionType = transactionType
         self.paymentMethod = paymentMethod
         self.errors = errors
+		self.responseCode = responseCode
+		self.responseMessage = responseMessage
     }
     
     public func toJSON() -> Dictionary<String, Any?> {
@@ -65,6 +73,8 @@ public class PaymentResult {
             "created_at": createdAt,
             "transaction_type": transactionType,
             "payment_method": paymentMethod?.toJSON(),
+			"response_code": responseCode,
+			"response_message": responseMessage,
             "errors": errors
         ]
     }
@@ -101,6 +111,9 @@ public class PaymentResult {
             return nil
         }
 
+		let responseCode = json["response_code"] as? String
+		let responseMessage = json["response_message"] as? String
+
         return PaymentResult(
                 status: json["status"] as! String,
                 currency: json["currency"] as? String,
@@ -110,6 +123,8 @@ public class PaymentResult {
                 createdAt: json["created_at"] as? String,
                 transactionType: json["transaction_type"] as? String,
                 paymentMethod: paymentMethod,
+				responseCode: responseCode,
+				responseMessage: responseMessage,
                 errors: errors
         )
     }
