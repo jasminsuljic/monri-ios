@@ -8,18 +8,6 @@
 		<data>
 		/mlmb/BT6Ddl1tbjtufGl06PPV0=
 		</data>
-		<key>Frameworks/Alamofire.framework/Alamofire</key>
-		<data>
-		3V08I4GF95b6RbFP/865A4fWtCQ=
-		</data>
-		<key>Frameworks/Alamofire.framework/Info.plist</key>
-		<data>
-		cOCTp9lkjtGKQfgr0+uET0bswaE=
-		</data>
-		<key>Frameworks/Alamofire.framework/_CodeSignature/CodeResources</key>
-		<data>
-		cgv/YHcYda8RHrhtbJNTr8/iWNw=
-		</data>
 		<key>Headers/Monri-Swift.h</key>
 		<data>
 		CAiHBGh0yyPoom5NyrWUc6kJf5Q=
@@ -30,15 +18,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Y+7nNrXXDKGRrFkLBE6LpjDZQvk=
+		yhC6O7bmx1szXfzal1jIAuCKNBY=
 		</data>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		kffbeXPGWIvzrXv3wGs63uK2Yr4=
+		g0RkM56nlIe6kMFcRKe8kBdTYvU=
 		</data>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		KF3k/Bf/Fnmtpb0cy/3LMzSptTQ=
+		C5wlloAQW3UG7kDBvRwAsSjOtYo=
 		</data>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -46,19 +34,19 @@
 		</data>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		KF3k/Bf/Fnmtpb0cy/3LMzSptTQ=
+		C5wlloAQW3UG7kDBvRwAsSjOtYo=
 		</data>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		L+GReS8l9kkabWhfOEAnxpypf7s=
+		KMqpZfEAy0SL/iROj4ns5wP+Ilc=
 		</data>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		kffbeXPGWIvzrXv3wGs63uK2Yr4=
+		g0RkM56nlIe6kMFcRKe8kBdTYvU=
 		</data>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		1WfF6fd+eEeROqr6O8duKapmydo=
+		wuZaOepoNLqO5NlyYd3E167vPfU=
 		</data>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -66,11 +54,11 @@
 		</data>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		1WfF6fd+eEeROqr6O8duKapmydo=
+		wuZaOepoNLqO5NlyYd3E167vPfU=
 		</data>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		zLQXANjP6Wi/OkwNEa8PkDosFoE=
+		kH6kveqrnHGYpTOsdTFEx3+3CXY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -94,27 +82,6 @@
 			hiB5V2Z8UF9WbBuQ2dfDMxJ8qxHYs8maVpaDDh73+3g=
 			</data>
 		</dict>
-		<key>Frameworks/Alamofire.framework/Alamofire</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ChbhnnsDOSipxgQ2jvR/v7VPyoaWQt3wLl0bj2z+hWk=
-			</data>
-		</dict>
-		<key>Frameworks/Alamofire.framework/Info.plist</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			sV8YpMIUzinL0bw472GIrSees8XhnU1ic80diTQBML4=
-			</data>
-		</dict>
-		<key>Frameworks/Alamofire.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			D7BTrF0L1gv89IH1RkS10PMO1UrJrC0jK+hOMVQ+gKM=
-			</data>
-		</dict>
 		<key>Headers/Monri-Swift.h</key>
 		<dict>
 			<key>hash2</key>
@@ -133,14 +100,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+hNjnL4OuzoXx+PKrcbS3bSWxCCLfS+Gvqp4ia8eCZQ=
+			rTuN49zulxQll6CflA9tophsnxPZC0bCaq+ol3SyEaw=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			U2tzB5IkPF1QO0/+snKkKokLgx0WLsL/YIfMbFNcwbU=
+			BFz62ku3DeJk+aZuNm7+ImtSMuunLxQkyj8Z9cLO1Qo=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
@@ -154,28 +121,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			U2tzB5IkPF1QO0/+snKkKokLgx0WLsL/YIfMbFNcwbU=
+			BFz62ku3DeJk+aZuNm7+ImtSMuunLxQkyj8Z9cLO1Qo=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			mtq4xETCJRdRX/mY5SeeybNG3FzGuF/e+Vcv/qCMkC8=
+			NyorpvUj9yZXd2EyLkHA/V7O4YADpUps2HlMyNd2ZZA=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+hNjnL4OuzoXx+PKrcbS3bSWxCCLfS+Gvqp4ia8eCZQ=
+			rTuN49zulxQll6CflA9tophsnxPZC0bCaq+ol3SyEaw=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			7RaBXP/KF252MMJZBWbMXAaf7s/pbAQb9xA2WmvBTpE=
+			DJOY/ZLLJG/LSxeS8hgkekNzcF5tL+NANn4LbdfwcBw=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -189,14 +156,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			7RaBXP/KF252MMJZBWbMXAaf7s/pbAQb9xA2WmvBTpE=
+			DJOY/ZLLJG/LSxeS8hgkekNzcF5tL+NANn4LbdfwcBw=
 			</data>
 		</dict>
 		<key>Modules/Monri.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			yMQqyX5fxsTVQZLYKcwtG65G1iNqsrzHA7NW/EtJmpc=
+			5piUqudZIqxGg9AIbCZnnW2cuAyOzaX+ITPMTEgYzo4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

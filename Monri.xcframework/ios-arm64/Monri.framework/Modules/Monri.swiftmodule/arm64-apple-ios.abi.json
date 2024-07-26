@@ -13290,9 +13290,139 @@
             ]
           },
           {
+            "kind": "Var",
+            "name": "responseCode",
+            "printedName": "responseCode",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:5Monri13PaymentResultC12responseCodeSSSgvp",
+            "mangledName": "$s5Monri13PaymentResultC12responseCodeSSSgvp",
+            "moduleName": "Monri",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:5Monri13PaymentResultC12responseCodeSSSgvg",
+                "mangledName": "$s5Monri13PaymentResultC12responseCodeSSSgvg",
+                "moduleName": "Monri",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "responseMessage",
+            "printedName": "responseMessage",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:5Monri13PaymentResultC15responseMessageSSSgvp",
+            "mangledName": "$s5Monri13PaymentResultC15responseMessageSSSgvp",
+            "moduleName": "Monri",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:5Monri13PaymentResultC15responseMessageSSSgvg",
+                "mangledName": "$s5Monri13PaymentResultC15responseMessageSSSgvg",
+                "moduleName": "Monri",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(status:currency:amount:orderNumber:panToken:createdAt:transactionType:paymentMethod:errors:)",
+            "printedName": "init(status:currency:amount:orderNumber:panToken:createdAt:transactionType:paymentMethod:responseCode:responseMessage:errors:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -13406,6 +13536,34 @@
               },
               {
                 "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
                 "name": "Array",
                 "printedName": "[Swift.String]",
                 "children": [
@@ -13420,8 +13578,8 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:5Monri13PaymentResultC6status8currency6amount11orderNumber8panToken9createdAt15transactionType13paymentMethod6errorsACSS_SSSgSiSgA4mA05SavedbP0_pSgSaySSGtcfc",
-            "mangledName": "$s5Monri13PaymentResultC6status8currency6amount11orderNumber8panToken9createdAt15transactionType13paymentMethod6errorsACSS_SSSgSiSgA4mA05SavedbP0_pSgSaySSGtcfc",
+            "usr": "s:5Monri13PaymentResultC6status8currency6amount11orderNumber8panToken9createdAt15transactionType13paymentMethod12responseCode0Q7Message6errorsACSS_SSSgSiSgA4oA05SavedbP0_pSgA2OSaySSGtcfc",
+            "mangledName": "$s5Monri13PaymentResultC6status8currency6amount11orderNumber8panToken9createdAt15transactionType13paymentMethod12responseCode0Q7Message6errorsACSS_SSSgSiSgA4oA05SavedbP0_pSgA2OSaySSGtcfc",
             "moduleName": "Monri",
             "declAttributes": [
               "AccessControl"

@@ -78,6 +78,8 @@ class ConfirmDirectPaymentFlowTest: XCTestCase {
                                                   createdAt: nil,
                                                   transactionType: nil,
                                                   paymentMethod: nil,
+                                                  responseCode: nil,
+                                                  responseMessage: nil,
                                                   errors: [])
         
         let paymentMethodRequiredResponse = PaymentStatusResponse(paymentStatus: .payment_method_required, status: PaymentStatus.payment_method_required.rawValue, paymentResult: expectedPaymentResult)
@@ -151,6 +153,8 @@ class ConfirmDirectPaymentFlowTest: XCTestCase {
                                                   createdAt: nil,
                                                   transactionType: nil,
                                                   paymentMethod: nil,
+                                                  responseCode: nil,
+                                                  responseMessage: nil,
                                                   errors: [])
         
         let paymentMethodRequiredResponse = PaymentStatusResponse(paymentStatus: .approved, status: PaymentStatus.approved.rawValue, paymentResult: expectedPaymentResult)

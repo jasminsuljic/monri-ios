@@ -365,7 +365,9 @@ public class PaymentResult {
   final public let transactionType: Swift.String?
   final public let paymentMethod: (any Monri.SavedPaymentMethod)?
   final public let errors: [Swift.String]
-  public init(status: Swift.String, currency: Swift.String?, amount: Swift.Int?, orderNumber: Swift.String?, panToken: Swift.String?, createdAt: Swift.String?, transactionType: Swift.String?, paymentMethod: (any Monri.SavedPaymentMethod)?, errors: [Swift.String])
+  final public let responseCode: Swift.String?
+  final public let responseMessage: Swift.String?
+  public init(status: Swift.String, currency: Swift.String?, amount: Swift.Int?, orderNumber: Swift.String?, panToken: Swift.String?, createdAt: Swift.String?, transactionType: Swift.String?, paymentMethod: (any Monri.SavedPaymentMethod)?, responseCode: Swift.String?, responseMessage: Swift.String?, errors: [Swift.String])
   public func toJSON() -> Swift.Dictionary<Swift.String, Any?>
   @objc deinit
 }
