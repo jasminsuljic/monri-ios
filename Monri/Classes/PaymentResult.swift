@@ -42,8 +42,14 @@ public class PaymentResult {
 
     //("errors")
     public let errors: [String]
+    
+    //("response_code")
+    public let responseCode: String?
+    
+    //("response_message")
+    public let responseMessage: String?
 
-    public init(status: String, currency: String?, amount: Int?, orderNumber: String?, panToken: String?, createdAt: String?, transactionType: String?, paymentMethod: SavedPaymentMethod?, errors: [String]) {
+    public init(status: String, currency: String?, amount: Int?, orderNumber: String?, panToken: String?, createdAt: String?, transactionType: String?, paymentMethod: SavedPaymentMethod?, responseCode: String?, responseMessage: String?, errors: [String]) {
         self.status = status
         self.currency = currency
         self.amount = amount
@@ -53,6 +59,8 @@ public class PaymentResult {
         self.transactionType = transactionType
         self.paymentMethod = paymentMethod
         self.errors = errors
+        self.responseCode = responseCode
+        self.responseMessage = responseMessage
     }
     
     public func toJSON() -> Dictionary<String, Any?> {
@@ -65,7 +73,9 @@ public class PaymentResult {
             "created_at": createdAt,
             "transaction_type": transactionType,
             "payment_method": paymentMethod?.toJSON(),
-            "errors": errors
+            "errors": errors,
+            "response_code": responseCode,
+            "response_message": responseMessage
         ]
     }
 
@@ -110,6 +120,8 @@ public class PaymentResult {
                 createdAt: json["created_at"] as? String,
                 transactionType: json["transaction_type"] as? String,
                 paymentMethod: paymentMethod,
+                responseCode: json["response_code"] as? String,
+                responseMessage: json["response_message"] as? String,
                 errors: errors
         )
     }
